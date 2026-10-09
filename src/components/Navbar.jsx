@@ -1,13 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import PriceTicker from "./PriceTicker";
+import { getFormattedBanglaDate } from "@/utils/formatBanglaDate";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [categories, setCategories] = useState([]);
+  const [currentDate] = useState(() => getFormattedBanglaDate());
 
   useEffect(() => {
     async function fetchCategories() {
@@ -28,24 +31,29 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-2xs">
-      {/* Top Bar Header */}
+      {/* Top Header Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-        {/* Logo & Bangla Date */}
+        {/* Logo & Dynamic Bangla Date */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 bg-[#008a45] rounded-xl flex items-center justify-center text-white text-xl shadow-md group-hover:bg-[#007038] transition-colors">
-            🛒
+          <div className="relative w-10 h-10 shrink-0">
+            <Image
+              src="/images/logo-icon.png"
+              alt="Bazar Dor Logo"
+              fill
+              className="object-contain"
+            />
           </div>
           <div className="flex flex-col">
             <span className="font-bold text-xl text-gray-900 tracking-tight">
               বাজার দর
             </span>
-            <span className="text-xs text-gray-500 font-medium">
-              শনিবার, ১০ অক্টোবর, ২০২৬
+            <span className="text-xs text-gray-500 font-medium h-4">
+              {currentDate}
             </span>
           </div>
         </Link>
 
-        {/* Temporary Placeholder for Auth Buttons (Step 5 এ BetterAuth যোগ হবে) */}
+        {/* Auth Buttons Placeholder */}
         <div className="flex items-center gap-2">
           <Link
             href="/signin"
@@ -62,7 +70,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Dynamic Category Nav Pills */}
+      {/* Category Tabs Nav */}
       <nav className="bg-gray-50 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto no-scrollbar flex items-center gap-2">
           {categories.map((cat) => {
@@ -86,7 +94,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Marquee Price Ticker */}
+      {/* Marquee Ticker */}
       <PriceTicker />
     </header>
   );
