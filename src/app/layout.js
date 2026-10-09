@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
@@ -9,9 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="bn">
-      <body className="bg-[#f3f5f3] text-gray-800 antialiased">
+      <body className="bg-[#f3f5f3] text-gray-800 antialiased min-h-screen flex flex-col">
         <Toaster position="top-right" />
-        {children}
+        <Navbar />
+        <main className="flex-1">{children}</main>
       </body>
     </html>
   );

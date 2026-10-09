@@ -14,8 +14,8 @@
   --color-brand-light: #f0fdf4;
 }
 
-/* Ticker Marquee Animation */
-@keyframes marquee {
+/* Custom Utilities for Continuous Marquee */
+@keyframes marquee-scroll {
   0% {
     transform: translateX(0%);
   }
@@ -25,11 +25,20 @@
 }
 
 .animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 35s linear infinite;
+  display: flex !important;
+  width: max-content !important;
+  animation: marquee-scroll 35s linear infinite !important;
 }
 
 .animate-marquee:hover {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
+}
+
+/* Hide scrollbar for category tabs */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
