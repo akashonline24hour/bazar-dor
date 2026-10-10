@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import PriceRisersSection from "@/components/PriceRisersSection";
+import PriceFallersSection from "@/components/PriceFallersSection";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch products
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -34,16 +34,21 @@ export default function Home() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((n) => (
-              <div
-                key={n}
-                className="h-44 bg-white rounded-2xl animate-pulse border border-gray-100"
-              />
-            ))}
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="h-44 bg-white rounded-2xl animate-pulse border border-gray-100"
+                />
+              ))}
+            </div>
           </div>
         ) : (
-          <PriceRisersSection products={products} />
+          <>
+            <PriceRisersSection products={products} />
+            <PriceFallersSection products={products} />
+          </>
         )}
       </main>
     </div>
