@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import PriceRisersSection from "@/components/PriceRisersSection";
 import PriceFallersSection from "@/components/PriceFallersSection";
+import AllProductsSection from "@/components/AllProductsSection";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -48,6 +49,7 @@ export default function Home() {
           <>
             <PriceRisersSection products={products} />
             <PriceFallersSection products={products} />
+            <AllProductsSection products={products} />
           </>
         )}
       </main>
