@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Toaster } from "react-hot-toast";
+import { ToastContainer } from "react-toastify"; // react-toastify ইমপোর্ট করা হলো
+import "react-toastify/dist/ReactToastify.css"; // react-toastify এর CSS ইমপোর্ট করা হলো
 import { Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
 
@@ -22,7 +23,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="bn" className={notoSerifBengali.className}>
       <body className="bg-[#f3f5f3] text-gray-800 antialiased min-h-screen flex flex-col justify-between">
-        <Toaster position="top-right" />
+        {/* react-toastify*/}
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <div>
           <Navbar />
           <main className="flex-1">{children}</main>

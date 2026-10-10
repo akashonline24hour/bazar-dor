@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Mail,
   Lock,
@@ -12,6 +13,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { toast } from "react-toastify";
+import { signUp } from "@/lib/auth-client"; // Better Auth ক্লায়েন্ট ইমপোর্ট
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -19,20 +21,39 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    // টোস্ট নোটিফিকেশনের উদাহরণ
-    setTimeout(() => {
+    try {
+      await signUp.email(
+        {
+          name,
+          email,
+          password,
+        },
+        {
+          onSuccess: () => {
+            toast.success("সাইন আপ সফল হয়েছে!");
+            router.push("/");
+            router.refresh();
+          },
+          onError: (ctx) => {
+            toast.error(ctx.error.message || "সাইন আপ করতে সমস্যা হয়েছে!");
+          },
+        },
+      );
+    } catch (err) {
+      toast.error("কোথাও কোনো ত্রুটি ঘটেছে। আবার চেষ্টা করুন।");
+    } finally {
       setLoading(false);
-      toast.success("সাইন আপ সফল হয়েছে!");
-    }, 1500);
+    }
   };
 
   const handleSocialSignUp = (provider) => {
-    toast.info(`${provider} দিয়ে সাইন আপ (Better Auth ইন্টিগ্রেশন বাকি আছে)`);
+    toast.info(`${provider} দিয়ে সাইন আপ শীঘ্রই আসছে...`);
   };
 
   return (
@@ -148,7 +169,7 @@ export default function SignupPage() {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-gray-700 block">
-                পাসওয়ার্ড
+                পাসওয়ার্ড
               </label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">

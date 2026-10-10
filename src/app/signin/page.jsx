@@ -2,28 +2,48 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
+import { signIn } from "@/lib/auth-client"; // Better Auth ক্লায়েন্ট ইমপোর্ট
 
 export default function SigninPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    // Tostify success message after a delay to simulate an API call
-    setTimeout(() => {
+    try {
+      await signIn.email(
+        {
+          email,
+          password,
+        },
+        {
+          onSuccess: () => {
+            toast.success("সাইন ইন সফল হয়েছে!");
+            router.push("/");
+            router.refresh();
+          },
+          onError: (ctx) => {
+            toast.error(ctx.error.message || "সাইন ইন করতে সমস্যা হয়েছে!");
+          },
+        },
+      );
+    } catch (err) {
+      toast.error("কোথাও কোনো ত্রুটি ঘটেছে। আবার চেষ্টা করুন।");
+    } finally {
       setLoading(false);
-      toast.success("সাইন ইন সফল হয়েছে!");
-    }, 1500);
+    }
   };
 
   const handleSocialSignIn = (provider) => {
-    toast.info(`${provider} দিয়ে সাইন ইন (Better Auth ইন্টিগ্রেশন বাকি আছে)`);
+    toast.info(`${provider} দিয়ে সাইন ইন শীঘ্রই আসছে...`);
   };
 
   return (
@@ -120,7 +140,7 @@ export default function SigninPage() {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-gray-700 block">
-                পাসওয়ার্ড
+                পাসওয়ার্ড
               </label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
@@ -154,13 +174,13 @@ export default function SigninPage() {
                   type="checkbox"
                   className="rounded border-gray-300 text-[#008a45] focus:ring-[#008a45]"
                 />
-                পাসওয়ার্ড মনে রাখুন
+                পাসওয়ার্ড মনে রাখুন
               </label>
               <a
                 href="#"
                 className="text-[#008a45] font-semibold hover:underline"
               >
-                পাসওয়ার্ড ভুলে গেছেন?
+                পাসওয়ার্ড ভুলে গেছেন?
               </a>
             </div>
 
