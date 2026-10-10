@@ -9,17 +9,18 @@ import { getFormattedBanglaDate } from "@/utils/formatBanglaDate";
 export default function Navbar() {
   const pathname = usePathname();
   const [categories, setCategories] = useState([]);
+  // সরাসরি ইনিশিয়াল স্টেটে ডেট সেট করা হলো
   const [currentDate] = useState(() => getFormattedBanglaDate());
 
   useEffect(() => {
     async function fetchCategories() {
       try {
         const res = await fetch(
-          "https://api.api-store.workers.dev/api/bazardor/categories",
+          "https://openapi.programming-hero.com/api/bazardor/categories",
         );
         if (res.ok) {
           const data = await res.json();
-          setCategories(data);
+          setCategories(Array.isArray(data) ? data : data.data || []);
         }
       } catch (err) {
         console.error("Failed to fetch categories:", err);
@@ -41,7 +42,10 @@ export default function Navbar() {
             <span className="font-bold text-xl text-gray-900 tracking-tight">
               বাজার দর
             </span>
-            <span className="text-xs text-gray-500 font-medium h-4">
+            <span
+              className="text-xs text-gray-500 font-medium h-4"
+              suppressHydrationWarning
+            >
               {currentDate}
             </span>
           </div>

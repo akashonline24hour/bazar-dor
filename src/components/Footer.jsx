@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 
 export default function Footer() {
@@ -31,7 +32,7 @@ export default function Footer() {
             href="/"
             className="hover:underline font-bold text-gray-800 hover:text-[#008a45]"
           >
-            Bazardor{" "}
+            Bazardor
           </Link>
           প্রজেক্ট। সর্বস্বত্ব সংরক্ষিত।
         </p>
