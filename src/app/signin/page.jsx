@@ -27,11 +27,13 @@ export default function SigninPage() {
         {
           onSuccess: () => {
             toast.success("সাইন ইন সফল হয়েছে!");
+            setEmail("");
+            setPassword("");
             router.push("/");
             router.refresh();
           },
           onError: (ctx) => {
-            toast.error(ctx.error.message || "সাইন ইন করতে সমস্যা হয়েছে!");
+            toast.error(ctx.error.message || "সাইন ইন করতে সমস্যা হয়েছে!");
           },
         },
       );
@@ -42,8 +44,19 @@ export default function SigninPage() {
     }
   };
 
-  const handleSocialSignIn = (provider) => {
-    toast.info(`${provider} দিয়ে সাইন ইন শীঘ্রই আসছে...`);
+  const handleSocialSignIn = async (provider) => {
+    if (provider === "Google") {
+      try {
+        await signIn.social({
+          provider: "google",
+          callbackURL: "/",
+        });
+      } catch (err) {
+        toast.error("গুগল দিয়ে সাইন ইন করতে সমস্যা হয়েছে!");
+      }
+    } else {
+      toast.info(`${provider} দিয়ে সাইন ইন শীঘ্রই আসছে...`);
+    }
   };
 
   return (
