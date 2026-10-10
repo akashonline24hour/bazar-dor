@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import PriceTicker from "./PriceTicker";
@@ -33,15 +32,10 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-2xs">
       {/* Top Header Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-        {/* Logo & Dynamic Bangla Date */}
+        {/* Logo Icon & Dynamic Bangla Date */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-10 h-10 shrink-0">
-            <Image
-              src="/images/logo-icon.png"
-              alt="Bazar Dor Logo"
-              fill
-              className="object-contain"
-            />
+          <div className="w-10 h-10 bg-green-50 text-[#008a45] rounded-2xl flex items-center justify-center text-lg border border-green-100 shadow-xs shrink-0">
+            🛒
           </div>
           <div className="flex flex-col">
             <span className="font-bold text-xl text-gray-900 tracking-tight">
@@ -53,17 +47,25 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Auth Buttons Placeholder */}
+        {/* Auth Buttons with Active State Logic */}
         <div className="flex items-center gap-2">
           <Link
             href="/signin"
-            className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-[#008a45] transition-colors"
+            className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
+              pathname === "/signin"
+                ? "bg-[#008a45] text-white shadow-2xs"
+                : "text-gray-700 hover:text-[#008a45] hover:bg-gray-50 border border-gray-200"
+            }`}
           >
             সাইন ইন
           </Link>
           <Link
             href="/signup"
-            className="px-4 py-2 text-sm font-semibold text-white bg-[#008a45] hover:bg-[#007038] rounded-xl shadow-2xs transition-colors"
+            className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
+              pathname === "/signup"
+                ? "bg-[#008a45] text-white shadow-2xs"
+                : "text-gray-700 hover:text-[#008a45] hover:bg-gray-50 border border-gray-200"
+            }`}
           >
             সাইন আপ
           </Link>

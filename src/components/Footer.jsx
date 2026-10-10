@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -9,19 +8,16 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
         {/* Left Side: Logo Icon & Brand Name */}
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 relative flex items-center justify-center">
-            <Image
-              src="/images/logo-icon.png"
-              alt="Bazardor Logo"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
+          <div className="w-7 h-7 bg-green-50 text-[#008a45] rounded-xl flex items-center justify-center text-sm border border-green-100 shadow-xs shrink-0">
+            🛒
           </div>
           <span className="font-bold text-gray-800 text-sm">
             বাজার দর{" "}
             <span className="font-normal text-gray-500 text-xs">
-              <Link href="/" className="hover:underline font-bold text-gray-800 hover:text-green-600">
+              <Link
+                href="/"
+                className="hover:underline font-bold text-gray-800 hover:text-[#008a45]"
+              >
                 Bazardor
               </Link>
             </span>
@@ -31,10 +27,13 @@ export default function Footer() {
         {/* Center: Copyright Text */}
         <p className="text-center">
           © {currentYear} বাজার দর{" "}
-          <Link href="/" className="hover:underline font-bold text-gray-800 hover:text-green-600">
-            Bazardor
+          <Link
+            href="/"
+            className="hover:underline font-bold text-gray-800 hover:text-[#008a45]"
+          >
+            Bazardor{" "}
           </Link>
-          . সর্বস্বত্ব সংরক্ষিত।
+          প্রজেক্ট। সর্বস্বত্ব সংরক্ষিত।
         </p>
 
         {/* Right Side: Disclaimer Note */}

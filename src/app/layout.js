@@ -11,8 +11,11 @@ const notoSerifBengali = Noto_Serif_Bengali({
 });
 
 export const metadata = {
-  title: "বাজার দর - Bajar Dor",
+  title: "বাজার দর - Bazar Dor",
   description: "প্রয়োজনীয় পণ্যের দাম এক নজরে",
+  icons: {
+    icon: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>",
+  },
 };
 
 export default function RootLayout({ children }) {
