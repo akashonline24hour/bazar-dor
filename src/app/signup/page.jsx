@@ -37,11 +37,17 @@ export default function SignupPage() {
         {
           onSuccess: () => {
             toast.success("সাইন আপ সফল হয়েছে!");
+
+            // সফলভাবে সাইন আপ হওয়ার পর ইনপুট ফিল্ডগুলো খালি করা হলো
+            setName("");
+            setEmail("");
+            setPassword("");
+
             router.push("/");
             router.refresh();
           },
           onError: (ctx) => {
-            toast.error(ctx.error.message || "সাইন আপ করতে সমস্যা হয়েছে!");
+            toast.error(ctx.error.message || "সাইন আপ করতে সমস্যা হয়েছে!");
           },
         },
       );
