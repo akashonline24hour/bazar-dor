@@ -13,7 +13,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { toast } from "react-toastify";
-import { signUp, signIn } from "@/lib/auth-client"; // Better Auth ক্লায়েন্ট ইমপোর্ট
+import { signUp, signIn } from "@/lib/auth-client";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -37,11 +37,9 @@ export default function SignupPage() {
         {
           onSuccess: () => {
             toast.success("সাইন আপ সফল হয়েছে!");
-
             setName("");
             setEmail("");
             setPassword("");
-
             router.push("/");
             router.refresh();
           },
@@ -58,17 +56,20 @@ export default function SignupPage() {
   };
 
   const handleSocialSignUp = async (provider) => {
-    if (provider === "Google") {
-      try {
+    try {
+      if (provider === "Google") {
         await signIn.social({
           provider: "google",
           callbackURL: "/",
         });
-      } catch (err) {
-        toast.error("গুগল দিয়ে সাইন আপ করতে সমস্যা হয়েছে!");
+      } else if (provider === "GitHub") {
+        await signIn.social({
+          provider: "github",
+          callbackURL: "/",
+        });
       }
-    } else {
-      toast.info(`${provider} দিয়ে সাইন আপ শীঘ্রই আসছে...`);
+    } catch (err) {
+      toast.error(`${provider} দিয়ে সাইন আপ করতে সমস্যা হয়েছে!`);
     }
   };
 

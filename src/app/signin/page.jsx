@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
-import { signIn } from "@/lib/auth-client"; // Better Auth ক্লায়েন্ট ইমপোর্ট
+import { signIn } from "@/lib/auth-client";
 
 export default function SigninPage() {
   const [email, setEmail] = useState("");
@@ -45,17 +45,20 @@ export default function SigninPage() {
   };
 
   const handleSocialSignIn = async (provider) => {
-    if (provider === "Google") {
-      try {
+    try {
+      if (provider === "Google") {
         await signIn.social({
           provider: "google",
           callbackURL: "/",
         });
-      } catch (err) {
-        toast.error("গুগল দিয়ে সাইন ইন করতে সমস্যা হয়েছে!");
+      } else if (provider === "GitHub") {
+        await signIn.social({
+          provider: "github",
+          callbackURL: "/",
+        });
       }
-    } else {
-      toast.info(`${provider} দিয়ে সাইন ইন শীঘ্রই আসছে...`);
+    } catch (err) {
+      toast.error(`${provider} দিয়ে সাইন ইন করতে সমস্যা হয়েছে!`);
     }
   };
 
@@ -181,26 +184,10 @@ export default function SigninPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-xs">
-              <label className="flex items-center gap-2 cursor-pointer text-gray-600">
-                <input
-                  type="checkbox"
-                  className="rounded border-gray-300 text-[#008a45] focus:ring-[#008a45]"
-                />
-                পাসওয়ার্ড মনে রাখুন
-              </label>
-              <a
-                href="#"
-                className="text-[#008a45] font-semibold hover:underline"
-              >
-                পাসওয়ার্ড ভুলে গেছেন?
-              </a>
-            </div>
-
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-[#008a45] hover:bg-[#007038] text-white rounded-2xl text-xs font-bold shadow-xs transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+              className="w-full py-3.5 bg-[#008a45] hover:bg-[#007038] text-white rounded-2xl text-xs font-bold shadow-xs transition-colors flex items-center justify-center gap-2 disabled:opacity-70 mt-2"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               সাইন ইন করুন
