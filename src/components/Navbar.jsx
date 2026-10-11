@@ -1,16 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PriceTicker from "./PriceTicker";
 import { getFormattedBanglaDate } from "@/utils/formatBanglaDate";
+import { useSession, signOut } from "@/lib/auth-client";
+import { toast } from "react-toastify";
+import UserDropdown from "./UserDropdown"; // আলাদা কম্পোনেন্ট ইমপোর্ট
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [categories, setCategories] = useState([]);
-  // সরাসরি ইনিশিয়াল স্টেটে ডেট সেট করা হলো
   const [currentDate] = useState(() => getFormattedBanglaDate());
+
+  const { data: session, isPending } = useSession();
+
+  const handleLogout = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success("সফলভাবে লগআউট হয়েছে!");
+          router.push("/signin");
+          router.refresh();
+        },
+        onError: () => {
+          toast.error("লগআউট করতে সমস্যা হয়েছে!");
+        },
+      },
+    });
+  };
 
   useEffect(() => {
     async function fetchCategories() {
@@ -31,9 +51,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-2xs">
-      {/* Top Header Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-        {/* Logo Icon & Dynamic Bangla Date */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 bg-green-50 text-[#008a45] rounded-2xl flex items-center justify-center text-lg border border-green-100 shadow-xs shrink-0">
             🛒
@@ -51,32 +69,39 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* Auth Buttons with Active State Logic */}
         <div className="flex items-center gap-2">
-          <Link
-            href="/signin"
-            className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
-              pathname === "/signin"
-                ? "bg-[#008a45] text-white shadow-2xs"
-                : "text-gray-700 hover:text-[#008a45] hover:bg-gray-50 border border-gray-200"
-            }`}
-          >
-            সাইন ইন
-          </Link>
-          <Link
-            href="/signup"
-            className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
-              pathname === "/signup"
-                ? "bg-[#008a45] text-white shadow-2xs"
-                : "text-gray-700 hover:text-[#008a45] hover:bg-gray-50 border border-gray-200"
-            }`}
-          >
-            সাইন আপ
-          </Link>
+          {isPending ? (
+            <div className="w-24 h-9 bg-gray-100 animate-pulse rounded-xl"></div>
+          ) : session?.user ? (
+            // ড্রপডাউন কম্পোনেন্ট কল করা হলো
+            <UserDropdown session={session} onLogout={handleLogout} />
+          ) : (
+            <>
+              <Link
+                href="/signin"
+                className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
+                  pathname === "/signin"
+                    ? "bg-[#008a45] text-white shadow-2xs"
+                    : "text-gray-700 hover:text-[#008a45] hover:bg-gray-50 border border-gray-200"
+                }`}
+              >
+                সাইন ইন
+              </Link>
+              <Link
+                href="/signup"
+                className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
+                  pathname === "/signup"
+                    ? "bg-[#008a45] text-white shadow-2xs"
+                    : "text-gray-700 hover:text-[#008a45] hover:bg-gray-50 border border-gray-200"
+                }`}
+              >
+                সাইন আপ
+              </Link>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Category Tabs Nav */}
       <nav className="bg-gray-50 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto no-scrollbar flex items-center gap-2">
           {categories.map((cat) => {
@@ -100,7 +125,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Marquee Ticker */}
       <PriceTicker />
     </header>
   );
