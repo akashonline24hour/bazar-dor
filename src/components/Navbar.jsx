@@ -7,15 +7,21 @@ import PriceTicker from "./PriceTicker";
 import { getFormattedBanglaDate } from "@/utils/formatBanglaDate";
 import { useSession, signOut } from "@/lib/auth-client";
 import { toast } from "react-toastify";
-import UserDropdown from "./UserDropdown"; // আলাদা কম্পোনেন্ট ইমপোর্ট
+import UserDropdown from "./UserDropdown";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [categories, setCategories] = useState([]);
-  const [currentDate] = useState(() => getFormattedBanglaDate());
+  const [currentDate, setCurrentDate] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
 
   const { data: session, isPending } = useSession();
+
+  useEffect(() => {
+    setIsMounted(true);
+    setCurrentDate(getFormattedBanglaDate());
+  }, []);
 
   const handleLogout = async () => {
     await signOut({
@@ -60,11 +66,8 @@ export default function Navbar() {
             <span className="font-bold text-xl text-gray-900 tracking-tight">
               বাজার দর
             </span>
-            <span
-              className="text-xs text-gray-500 font-medium h-4"
-              suppressHydrationWarning
-            >
-              {currentDate}
+            <span className="text-xs text-gray-500 font-medium h-4">
+              {isMounted ? currentDate : ""}
             </span>
           </div>
         </Link>
@@ -73,7 +76,6 @@ export default function Navbar() {
           {isPending ? (
             <div className="w-24 h-9 bg-gray-100 animate-pulse rounded-xl"></div>
           ) : session?.user ? (
-            // ড্রপডাউন কম্পোনেন্ট কল করা হলো
             <UserDropdown session={session} onLogout={handleLogout} />
           ) : (
             <>

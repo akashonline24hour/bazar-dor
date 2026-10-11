@@ -1,8 +1,17 @@
 "use client";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import { toBanglaNumber } from "@/utils/convertNumber";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const [currentYear, setCurrentYear] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const year = new Date().getFullYear();
+    setCurrentYear(toBanglaNumber ? toBanglaNumber(year) : year);
+  }, []);
 
   return (
     <footer className="bg-white border-t border-gray-200/80 mt-16 py-5">
@@ -27,13 +36,13 @@ export default function Footer() {
 
         {/* Center: Copyright Text */}
         <p className="text-center">
-          © {currentYear} বাজার দর{" "}
+          © {isMounted ? currentYear : "২০২৬"} বাজার দর{" "}
           <Link
             href="/"
             className="hover:underline font-bold text-gray-800 hover:text-[#008a45]"
           >
             Bazardor
-          </Link>
+          </Link>{" "}
           প্রজেক্ট। সর্বস্বত্ব সংরক্ষিত।
         </p>
 
