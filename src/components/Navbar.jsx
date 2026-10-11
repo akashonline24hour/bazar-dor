@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import PriceTicker from "./PriceTicker";
 import { getFormattedBanglaDate } from "@/utils/formatBanglaDate";
 import { useSession, signOut } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 import UserDropdown from "./UserDropdown";
 
-export default function Navbar() {
+function NavbarContent() {
   const pathname = usePathname();
   const router = useRouter();
   const [categories, setCategories] = useState([]);
@@ -129,5 +129,14 @@ export default function Navbar() {
 
       <PriceTicker />
     </header>
+  );
+}
+
+// মূল এক্সপোর্ট যা সাসপেন্স দিয়ে ঘেরা থাকবে
+export default function Navbar() {
+  return (
+    <Suspense fallback={<div className="h-16 bg-white border-b"></div>}>
+      <NavbarContent />
+    </Suspense>
   );
 }
