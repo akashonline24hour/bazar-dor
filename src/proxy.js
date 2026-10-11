@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl;
 
   // Better Auth সেশন কুকি চেক করা
@@ -19,7 +19,7 @@ export async function middleware(request) {
     return NextResponse.redirect(url);
   }
 
-  // ২. অথ রুট (লগইন করা থাকলে সাইন-ইন বা সাইন-আপ পেজে যাওয়া যাবে না)
+  // ২. অথ রুট (লগইন করা থাকলে সাইন-ইন বা সাইন-আপ পেজে যাওয়া যাবে না)
   const authRoutes = ["/signin", "/signup"];
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
@@ -30,7 +30,7 @@ export async function middleware(request) {
   return NextResponse.next();
 }
 
-// কোন কোন পাথে মিডলওয়্যার রান করবে
+// কোন কোন পাথে প্রোক্সি রান করবে
 export const config = {
   matcher: [
     "/profile/:path*",
